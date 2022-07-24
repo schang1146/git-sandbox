@@ -1,7 +1,11 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import Image from 'next/image';
 import styles from '../styles/Home.module.css';
+
+const TerminalComponent = dynamic(() => import('../components/terminal'), {
+  ssr: false,
+});
 
 const Home: NextPage = () => {
   return (
@@ -12,7 +16,9 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <main className={styles.main}>Under construction</main>
+      <main className={styles.main}>
+        <TerminalComponent />
+      </main>
     </div>
   );
 };
