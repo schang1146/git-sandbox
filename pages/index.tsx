@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import styles from '../styles/index.module.css';
 
 const TerminalComponent = dynamic(() => import('../components/terminal'), {
   ssr: false,
