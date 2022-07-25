@@ -9,16 +9,16 @@ export default function DynamicTerminal() {
   let currentLine = 1;
   let currentLineContent = '';
   const prefix = '\x1B[92mgit@sandbox\x1B[0m $ ';
+  const term = new Terminal({
+    convertEol: true,
+    cursorBlink: true,
+    cursorStyle: 'bar',
+  });
 
   const openTerminal = (toggle: boolean) => {
     if (!toggle) {
-      console.log(terminalRef);
+      terminalRef.current?.replaceChildren();
     } else {
-      const term = new Terminal({
-        convertEol: true,
-        cursorBlink: true,
-        cursorStyle: 'bar',
-      });
       const fitAddon = new FitAddon();
       term.loadAddon(fitAddon);
       term.open(terminalRef.current!);
@@ -61,8 +61,8 @@ export default function DynamicTerminal() {
 
   return (
     <div>
-      <button onClick={() => openTerminal(!isTerminalOpen)}>Open terminal</button>
       <div id='terminal' ref={terminalRef} />
+      <button onClick={() => openTerminal(!isTerminalOpen)}>Toggle Terminal</button>
     </div>
   );
 }
