@@ -22,7 +22,7 @@ export default function DynamicTerminal() {
       const fitAddon = new FitAddon();
       term.loadAddon(fitAddon);
       term.open(terminalRef.current!);
-      // fitAddon.fit();
+      fitAddon.fit();
       term.write('\x1B[92mgit@sandbox\x1B[0m $ ');
       term.onKey((e) => {
         currentLineContent += e.key;
