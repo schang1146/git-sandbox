@@ -1,19 +1,18 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 
 export default function DynamicTerminal() {
   const [isTerminalOpen, toggleTerminal] = useState(false);
-  const [terminal, setTerminal] = useState(null);
   const [history, setHistory] = useState<string[]>([]);
+  const terminalRef = useRef<HTMLDivElement>(null);
   let currentLine = 1;
   let currentLineContent = '';
   const prefix = '\x1B[92mgit@sandbox\x1B[0m $ ';
 
   const openTerminal = (toggle: boolean) => {
-    const terminalElement = document.getElementById('terminal');
     if (!toggle) {
-      console.log(terminalElement);
+      console.log(terminalRef);
     } else {
       const term = new Terminal({
         convertEol: true,
@@ -22,7 +21,7 @@ export default function DynamicTerminal() {
       });
       const fitAddon = new FitAddon();
       term.loadAddon(fitAddon);
-      term.open(terminalElement!);
+      term.open(terminalRef.current!);
       // fitAddon.fit();
       term.write('\x1B[92mgit@sandbox\x1B[0m $ ');
       term.onKey((e) => {
@@ -63,7 +62,7 @@ export default function DynamicTerminal() {
   return (
     <div>
       <button onClick={() => openTerminal(!isTerminalOpen)}>Open terminal</button>
-      <div id='terminal' />
+      <div id='terminal' ref={terminalRef} />
     </div>
   );
 }
