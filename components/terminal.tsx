@@ -70,7 +70,7 @@ export default function DynamicTerminal() {
         break;
       default:
         term.write(`\r\n${parsedCmd[0]}: command not found`);
-        currentLine += 2;
+        currentLine += 1;
     }
 
     currentLineContent = '';
