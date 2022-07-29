@@ -31,15 +31,12 @@ export default function DynamicTerminal() {
         return false;
       case 'Backspace':
         if (e.type === 'keydown') {
-          term.write(`\x1B[${currentLine}H`);
+          term.write(`\x1B[${currentLine}H`); // moves to beginning of currentLine
+          term.write('\x1B[J\r'); // erases everything to the right
           if (currentLineContent) {
             currentLineContent = currentLineContent.slice(0, currentLineContent.length - 1);
-            term.write('\x1B[J\r');
-            term.write(`\x1B[92mgit@sandbox\x1B[0m $ ${currentLineContent}`);
-          } else {
-            term.write('\x1B[J\r');
-            term.write('\x1B[92mgit@sandbox\x1B[0m $ ');
           }
+          term.write(`\x1B[92mgit@sandbox\x1B[0m $ ${currentLineContent}`);
         }
         return false;
       default:
@@ -70,7 +67,7 @@ export default function DynamicTerminal() {
         break;
       default:
         term.write(`\r\n${parsedCmd[0]}: command not found`);
-        currentLine += 1;
+        currentLine += 1; // TODO: add correct # of lines if cmd is multi-line
     }
 
     currentLineContent = '';
