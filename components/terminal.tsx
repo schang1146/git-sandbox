@@ -19,7 +19,9 @@ export default function DynamicTerminal() {
 
   useEffect(() => {
     term.open(terminalRef.current!);
+    console.log(`Before fitting xTerm screen\nContainer width: ${terminalRef.current?.clientWidth}\nCols: ${term.cols}`);
     fitAddon.fit();
+    console.log(`After fitting xTerm screen\nContainer width: ${terminalRef.current?.clientWidth}\nCols: ${term.cols}`);
     term.onKey((e) => {
       currentLineContent += e.key;
       term.write(e.key);
@@ -28,6 +30,7 @@ export default function DynamicTerminal() {
       switch (e.key) {
         case 'Enter':
           if (e.type === 'keydown') {
+            incrementLines(prefix + currentLineContent);
             execCommand(currentLineContent);
           }
           return false;
@@ -54,16 +57,17 @@ export default function DynamicTerminal() {
     const splitCmd = cmd.split(' ');
     switch (splitCmd[0]) {
       case 'help':
-        term.write('\
+        const helpText = '\
         \r\nWelcome to Git Sandbox! Try some of the commands below.\
         \r\n\
         \r\nhelp   Prints this help message\
-        \r\ngit    Simulate git commands\
-        ');
-        currentLine += 4;
+        \r\ngit    Simulate git commands';
+        term.write(helpText);
+        currentLine += incrementLines(helpText);
         break;
       default:
-        term.write(`\r\n${splitCmd[0]}: command not found`);
+        const notFoundText = `${splitCmd[0]}: command not found`;
+        term.write(`\r\n${notFoundText}`);
         currentLine += incrementLines(currentLineContent);
     }
 
@@ -72,9 +76,15 @@ export default function DynamicTerminal() {
     currentLine += Math.ceil((cmd.length + prefix.replace(/[^\x00-\x7F]/g, '').length) / term.cols);
   };
 
-  const incrementLines = (cmd: string): number => {
-    const parsedCmd = (prefix + cmd).replace(/[^\x00-\x7F]/g, '');
-    return Math.ceil(parsedCmd.length / term.cols) + 1;
+  const incrementLines = (text: string): number => {
+    let linesToAdd = 0;
+    const splitText = text.split('\r\n');
+    for (const lineText of splitText) {
+      const parsedLineText = lineText.replace(/[^\x00-\x7F]/g, '');
+      linesToAdd += Math.ceil(parsedLineText.length / term.cols);
+    }
+    console.log(`incrementLines:\ntext: ${text}\nlines added: ${linesToAdd}`);
+    return linesToAdd;
   };
 
   const toggleTerminal = () => {
