@@ -51,8 +51,8 @@ export default function DynamicTerminal() {
   const execCommand = (cmd: string) => {
     setHistory(history.concat([cmd]));
 
-    const parsedCmd = cmd.split(' ');
-    switch (parsedCmd[0]) {
+    const splitCmd = cmd.split(' ');
+    switch (splitCmd[0]) {
       case 'help':
         term.write('\
         \r\nWelcome to Git Sandbox! Try some of the commands below.\
@@ -63,13 +63,18 @@ export default function DynamicTerminal() {
         currentLine += 4;
         break;
       default:
-        term.write(`\r\n${parsedCmd[0]}: command not found`);
-        currentLine += 1; // TODO: add correct # of lines if cmd is multi-line
+        term.write(`\r\n${splitCmd[0]}: command not found`);
+        currentLine += incrementLines(currentLineContent);
     }
 
     currentLineContent = '';
     term.write(`\r\n\r\n${prefix}`);
-    currentLine += Math.ceil((cmd.length + prefix.replace(/[^\x00-\x7F]/g, '').length) / term.cols) + 1;
+    currentLine += Math.ceil((cmd.length + prefix.replace(/[^\x00-\x7F]/g, '').length) / term.cols);
+  };
+
+  const incrementLines = (cmd: string): number => {
+    const parsedCmd = (prefix + cmd).replace(/[^\x00-\x7F]/g, '');
+    return Math.ceil(parsedCmd.length / term.cols) + 1;
   };
 
   const toggleTerminal = () => {
