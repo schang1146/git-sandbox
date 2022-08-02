@@ -30,7 +30,6 @@ export default function DynamicTerminal() {
       switch (e.key) {
         case 'Enter':
           if (e.type === 'keydown') {
-            incrementLines(prefix + currentLineContent);
             execCommand(currentLineContent);
           }
           return false;
@@ -53,6 +52,7 @@ export default function DynamicTerminal() {
 
   const execCommand = (cmd: string) => {
     setHistory(history.concat([cmd]));
+    currentLine += incrementLines(prefix + currentLineContent);
 
     const splitCmd = cmd.split(' ');
     switch (splitCmd[0]) {
@@ -61,19 +61,23 @@ export default function DynamicTerminal() {
         \r\nWelcome to Git Sandbox! Try some of the commands below.\
         \r\n\
         \r\nhelp   Prints this help message\
-        \r\ngit    Simulate git commands';
+        \r\ngit    Simulate git commands\
+        \r\n\
+        \r\n';
         term.write(helpText);
         currentLine += incrementLines(helpText);
         break;
       default:
-        const notFoundText = `${splitCmd[0]}: command not found`;
-        term.write(`\r\n${notFoundText}`);
-        currentLine += incrementLines(currentLineContent);
+        const notFoundText = `\
+        \r\n${splitCmd[0]}: command not found\
+        \r\n\
+        \r\n`;
+        term.write(notFoundText);
+        currentLine += incrementLines(notFoundText);
     }
 
     currentLineContent = '';
-    term.write(`\r\n\r\n${prefix}`);
-    currentLine += Math.ceil((cmd.length + prefix.replace(/[^\x00-\x7F]/g, '').length) / term.cols);
+    term.write(`${prefix}`);
   };
 
   const incrementLines = (text: string): number => {
@@ -81,9 +85,9 @@ export default function DynamicTerminal() {
     const splitText = text.split('\r\n');
     for (const lineText of splitText) {
       const parsedLineText = lineText.replace(/[^\x00-\x7F]/g, '');
-      linesToAdd += Math.ceil(parsedLineText.length / term.cols);
+      linesToAdd += Math.floor(parsedLineText.length / term.cols);
     }
-    console.log(`incrementLines:\ntext: ${text}\nlines added: ${linesToAdd}`);
+    linesToAdd += splitText.length - 1;
     return linesToAdd;
   };
 
