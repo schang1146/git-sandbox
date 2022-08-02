@@ -18,8 +18,12 @@ export default function DynamicTerminal() {
   term.loadAddon(fitAddon);
 
   useEffect(() => {
+    if (terminalRef.current?.childElementCount) {
+      terminalRef.current?.removeChild(terminalRef.current.firstElementChild!);
+    }
+    console.log('Opening fresh terminal');
     term.open(terminalRef.current!);
-    console.log(`Before fitting xTerm screen\nContainer width: ${terminalRef.current?.clientWidth}\nCols: ${term.cols}`);
+    console.log(`Before fitting xTerm screen\nContainesr width: ${terminalRef.current?.clientWidth}\nCols: ${term.cols}`);
     fitAddon.fit();
     console.log(`After fitting xTerm screen\nContainer width: ${terminalRef.current?.clientWidth}\nCols: ${term.cols}`);
     term.onKey((e) => {
@@ -97,7 +101,7 @@ export default function DynamicTerminal() {
 
   return (
     <div style={{ width: '900px', height: '600px' }}>
-      <div id='terminal' ref={terminalRef} style={{ display: `${isTerminalOpen ? 'block' : 'none'}` }} />
+      <div id='terminal' ref={terminalRef} style={{ width: 'inherit', height: 'inherit', display: `${isTerminalOpen ? 'block' : 'none'}` }} />
       {/* <button onClick={() => toggleTerminal()}>Toggle Terminal</button> */}
     </div>
   );
