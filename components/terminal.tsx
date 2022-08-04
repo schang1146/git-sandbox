@@ -60,6 +60,31 @@ export default function DynamicTerminal() {
 
     const splitCmd = cmd.trim().split(' ');
     switch (splitCmd[0]) {
+      case 'git':
+        const gitText = "\
+        \r\nusage: git [--help]\
+        \r\n\
+        \r\nThese are common Git commands used in various situations:\
+        \r\n\
+        \r\nstart a working area (see also: git help tutorial)\
+        \r\n\
+        \r\nwork on the current change (see also: git help everyday)\
+        \r\n\
+        \r\nexamine the history and state (see also: git help revisions)\
+        \r\n\
+        \r\ngrow, mark and tweak your common history\
+        \r\n\
+        \r\ncollaborate (see also: git help workflow)\
+        \r\n\
+        \r\n'git help -a' and 'git help -g' list available subcommands and some\
+        \r\nconcept guides. See 'git help <command>' or 'git help <concept>'\
+        \r\nto read about a specific subcommand or concept.\
+        \r\nSee 'git help git' for an overview of the system.\
+        \r\n\
+        \r\n";
+        term.write(gitText);
+        currentLine += incrementLines(gitText);
+        break;
       case 'help':
         const helpText = '\
         \r\nWelcome to Git Sandbox! Try some of the commands below.\
