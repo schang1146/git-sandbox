@@ -58,7 +58,7 @@ export default function DynamicTerminal() {
     setHistory(history.concat([cmd]));
     currentLine += incrementLines(prefix + currentLineContent);
 
-    const splitCmd = cmd.split(' ');
+    const splitCmd = cmd.trim().split(' ');
     switch (splitCmd[0]) {
       case 'help':
         const helpText = '\
@@ -70,6 +70,11 @@ export default function DynamicTerminal() {
         \r\n';
         term.write(helpText);
         currentLine += incrementLines(helpText);
+        break;
+      case '':
+        const blankText = '\r\n\r\n';
+        term.write(blankText);
+        currentLine += incrementLines(blankText);
         break;
       default:
         const notFoundText = `\
