@@ -5,7 +5,7 @@ import execGitCmd from '../commands/git';
 
 export default function DynamicTerminal() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(true);
-  const [history, setHistory] = useState<string[]>([]);
+  let history: string[] = [];
   const terminalRef = useRef<HTMLDivElement>(null);
   let currentLine = 1;
   let currentLineContent = '';
@@ -28,16 +28,19 @@ export default function DynamicTerminal() {
     fitAddon.fit();
     console.log(`After fitting xTerm screen\nContainer width: ${terminalRef.current?.clientWidth}\nCols: ${term.cols}`);
     term.onKey((e) => {
+      console.log(`term.onKey e: ${e.domEvent.type}`);
       currentLineContent += e.key;
-      term.write(e.key);
+      switch (e.domEvent.key) {
+        case 'ArrowUp':
+          term.write(history[history.length - 1]);
+          break;
+        default:
+          term.write(e.key);
+      }
     });
     term.attachCustomKeyEventHandler((e) => {
+      // console.log(`term.attachCustomKeyEventHandler e: ${e}`);
       switch (e.key) {
-        case 'Enter':
-          if (e.type === 'keydown') {
-            execCommand(currentLineContent);
-          }
-          return false;
         case 'Backspace':
           if (e.type === 'keydown') {
             term.write(`\x1B[${currentLine}H`); // moves to beginning of currentLine
@@ -48,6 +51,11 @@ export default function DynamicTerminal() {
             term.write(`${prefix}${currentLineContent}`);
           }
           return false;
+        case 'Enter':
+          if (e.type === 'keydown') {
+            execCommand(currentLineContent);
+          }
+          return false;
         default:
           return true;
       }
@@ -56,7 +64,7 @@ export default function DynamicTerminal() {
   }, [terminalRef]);
 
   const execCommand = (cmd: string) => {
-    setHistory(history.concat([cmd]));
+    history.push(cmd);
     currentLine += incrementLines(prefix + currentLineContent);
 
     const splitCmd = cmd.trim().split(' ');
