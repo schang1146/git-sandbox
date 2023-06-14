@@ -216,10 +216,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:18.0.3":
-  version: 18.0.3
-  resolution: "@types/node@npm:18.0.3"
-  checksum: 5dec59fbbc1186c808b53df1ca717dad034dbd6a901c75f5b052c845618b531b05f27217122c6254db99529a68618e4cfc534ae3dbf4e88754e9e572df80defa
+"@types/node@npm:18.16.18":
+  version: 18.16.18
+  resolution: "@types/node@npm:18.16.18"
+  checksum: d32d8a0a04cd3f5ecb361bcb42f3a07623881ac90d680e06bf626defb3c663a94860d11690babe607cfe67265eceeb8a59ba5fe40c0e49f5a1b01e0088640469
   languageName: node
   linkType: hard
 
@@ -1674,7 +1674,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nextjs-git-sandbox@workspace:."
   dependencies:
-    "@types/node": 18.0.3
+    "@types/node": 18.16.18
     "@types/react": 18.0.15
     "@types/react-dom": 18.0.6
     eslint: 8.19.0
