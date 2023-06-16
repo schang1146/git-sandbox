@@ -1684,7 +1684,7 @@ __metadata:
     react-dom: 18.2.0
     typescript: 4.7.4
     xterm: ^4.19.0
-    xterm-addon-fit: ^0.5.0
+    xterm-addon-fit: ^0.7.0
   languageName: unknown
   linkType: soft
 
@@ -2377,12 +2377,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xterm-addon-fit@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "xterm-addon-fit@npm:0.5.0"
+"xterm-addon-fit@npm:^0.7.0":
+  version: 0.7.0
+  resolution: "xterm-addon-fit@npm:0.7.0"
   peerDependencies:
-    xterm: ^4.0.0
-  checksum: 884d9f360893335c87e4514beeda2af6dbebf38a89b8518f1126d9c4611aefc1598b750bb43a953b79fdf1179c40d70c77a9169ae10f07e0abbbdb39b919b33f
+    xterm: ^5.0.0
+  checksum: 512d41f80d6f9427ba02dab4e6fd642e94775a9cf7ef72ae4b55eab2a36856b5c67069bfc66b4af412fdce29a0842f9c6382af3672f0b514c4352dfd47defe8f
   languageName: node
   linkType: hard
 
